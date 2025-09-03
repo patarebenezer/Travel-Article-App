@@ -26,7 +26,7 @@ const fetchArticleDetail = async (
   typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
  const response = await axios.get(
-  `https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api/articles/${documentId}`,
+  `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${documentId}`,
   {
    headers: {
     Authorization: `Bearer ${token}`,

@@ -52,7 +52,7 @@ export default function ArticleModal({
 }: ArticleModalProps) {
  const fetchCategories = async () => {
   const res = await axios.get(
-   "https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api/categories"
+   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories`
   );
   return res.data.data;
  };

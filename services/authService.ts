@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api } from "@/lib/api";
 import { LoginFormData } from "@/schemas/loginSchema";
 import { RegisterFormData } from "@/schemas/registerSchema";
 
@@ -12,21 +12,13 @@ export type AuthResponse = {
 };
 
 export const loginUser = async (data: LoginFormData): Promise<AuthResponse> => {
- const response = await axios.post<AuthResponse>(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/local`,
-  data,
-  { headers: { "Content-Type": "application/json" } }
- );
+ const response = await api.post<AuthResponse>("/auth/local", data);
  return response.data;
 };
 
 export const registerUser = async (
  data: RegisterFormData
 ): Promise<AuthResponse> => {
- const response = await axios.post<AuthResponse>(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/local/register`,
-  data,
-  { headers: { "Content-Type": "application/json" } }
- );
+ const response = await api.post<AuthResponse>("/auth/local/register", data);
  return response.data;
 };

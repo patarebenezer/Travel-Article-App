@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
+import { api } from "@/lib/api";
 
-const getToken = () =>
- typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const isValidUrl = (url: string): boolean => {
+ try {
+  const parsedUrl = new URL(url);
+  return parsedUrl.protocol === "https:";
+ } catch (_) {
+  return false;
+ }
+};
 
 export const fetchArticles = async ({
  pageParam = 1,
@@ -10,40 +16,30 @@ export const fetchArticles = async ({
  category,
  sortOrder,
 }: any) => {
- const token = getToken();
- const response = await axios.get(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
-  {
-   headers: { Authorization: `Bearer ${token}` },
-   params: {
-    "pagination[page]": pageParam,
-    "pagination[pageSize]": 6,
-    ...(title && { "filters[title][$eqi]": title }),
-    ...(category && { "filters[category][name][$eqi]": category }),
-    ...(sortOrder && { "sort[0]": sortOrder }),
-    "populate[user]": "*",
-    "populate[category]": "*",
-    "populate[comments][populate][user]": "*",
-   },
-  }
- );
+ const response = await api.get("/articles", {
+  params: {
+   "pagination[page]": pageParam,
+   "pagination[pageSize]": 6,
+   ...(title && { "filters[title][$eqi]": title }),
+   ...(category && { "filters[category][name][$eqi]": category }),
+   ...(sortOrder && { "sort[0]": sortOrder }),
+   "populate[user]": "*",
+   "populate[category]": "*",
+   "populate[comments][populate][user]": "*",
+  },
+ });
  return response.data;
 };
 
 export const fetchCategories = async () => {
- const response = await axios.get(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories`
- );
+ const response = await api.get("/categories");
  return response.data.data;
 };
 
 export const createArticle = async (data: any) => {
- const token = getToken();
- return axios.post(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
-  { data: { ...data, category: Number(data.category) } },
-  { headers: { Authorization: `Bearer ${token}` } }
- );
+ return api.post("/articles", {
+  data: { ...data, category: Number(data.category) },
+ });
 };
 
 export const updateArticle = async ({
@@ -53,17 +49,31 @@ export const updateArticle = async ({
  id: number;
  data: any;
 }) => {
- const token = getToken();
- return axios.put(
-  `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
-  { data: { ...data, category: Number(data.category) } },
-  { headers: { Authorization: `Bearer ${token}` } }
- );
+ return api.put(`/articles/${id}`, {
+  data: { ...data, category: Number(data.category) },
+ });
 };
 
 export const deleteArticle = async (id: number) => {
- const token = getToken();
- return axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`, {
-  headers: { Authorization: `Bearer ${token}` },
- });
+ return api.delete(`/articles/${id}`);
+};
+
+export const fetchArticleDetail = async (documentId: string) => {
+ const response = await api.get(`/articles/${documentId}`);
+
+ const item = response.data.data;
+
+ const imageUrl =
+  item.cover_image_url && isValidUrl(item.cover_image_url)
+   ? item.cover_image_url
+   : "/images/default-image.jpg";
+
+ return {
+  id: item.id,
+  documentId: item.documentId.toString(),
+  title: item.title,
+  description: item.description,
+  cover_image_url: imageUrl,
+  createdAt: item.createdAt,
+ };
 };

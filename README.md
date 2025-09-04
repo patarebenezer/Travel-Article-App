@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧳 Travel Article App
 
-## Getting Started
+A **Travel Article App** built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, and **React Query**.  
+This app allows users to **view travel articles**, **filter by category**, and **perform CRUD operations** (Create, Read, Update, Delete) on articles.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+✅ User Authentication (Login & Register)  
+✅ Protected Routes (JWT-based)  
+✅ Article Management (Add, Edit, Delete)  
+✅ Infinite Scroll for Articles  
+✅ Search & Filter by Category  
+✅ Responsive Design (Mobile, Tablet, Desktop)  
+✅ Skeleton Loading State  
+✅ Share Article on Social Media  
+✅ **API Integration** using Axios with Interceptors  
+✅ Toast Notifications for Success & Error  
+✅ Ready for **Vercel Deployment**
+
+---
+
+## 📦 Tech Stack
+
+- **Next.js 14** (App Router)
+- **TypeScript**
+- **Tailwind CSS** + **shadcn/ui**
+- **React Query (TanStack Query)**
+- **Axios** (with token interceptor)
+- **React Hook Form + Zod** (Form validation)
+- **React Hot Toast** (Notifications)
+
+---
+
+## 🔑 Environment Variables
+
+Create a `.env.local` file in the root folder and add:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=https://your-api-url.com
+```
+
+> ✅ For security, **do not commit `.env.local`**. Instead, create an `.env.example` for sharing.
+
+---
+
+## 🛠 Installation & Setup
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/yourusername/travel-article-app.git
+cd travel-article-app
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✅ Available Scripts
 
-## Learn More
+- **`npm run dev`** – Start development server
+- **`npm run build`** – Build for production
+- **`npm start`** – Run production build
+- **`npm run lint`** – Check linting errors
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📂 Folder Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+travel-article-app/
+│
+├── app/               # App Router pages & layout
+├── components/        # Reusable UI components
+├── hooks/             # Custom hooks (React Query, Debounce)
+├── lib/               # Axios instance & helpers
+├── services/          # API service functions
+├── schemas/           # Zod validation schemas
+├── public/            # Static assets
+└── styles/            # Global styles
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔍 How It Works
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **React Query** handles fetching, caching, and updating articles.
+- **Axios interceptor** adds JWT token from `localStorage` automatically.
+- **Infinite scroll** implemented using `IntersectionObserver`.
+- **Validation** powered by **React Hook Form + Zod**.
+- **Responsive UI** built with **Tailwind CSS** and **shadcn/ui** components.
+
+---
+
+## 🌍 Deployment on Vercel
+
+1. Push your code to GitHub.
+2. Go to [Vercel](https://vercel.com) → Import Project.
+3. Add your environment variables in **Vercel Dashboard** → **Settings → Environment Variables**.
+4. Deploy and enjoy 🚀
+
+---
+
+## 📸 Screenshots
+
+_Add screenshots of your app here (Home page, Article detail, etc.)_
+
+---
+
+## 📚 Learn More
+
+- [Next.js Docs](https://nextjs.org/docs)
+- [React Query](https://tanstack.com/query/latest)
+- [Tailwind CSS](https://tailwindcss.com)
+- [shadcn/ui](https://ui.shadcn.com)

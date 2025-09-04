@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect } from "react";
@@ -57,16 +58,25 @@ export default function ArticleModal({
    category: 0,
   },
  });
+ console.log({ initialData });
 
  useEffect(() => {
   if (show) {
    reset(
-    initialData || {
-     title: "",
-     description: "",
-     cover_image_url: "",
-     category: 0,
-    }
+    initialData
+     ? {
+        ...initialData,
+        category:
+         typeof initialData.category === "object"
+          ? (initialData.category as any).id
+          : initialData.category,
+       }
+     : {
+        title: "",
+        description: "",
+        cover_image_url: "",
+        category: 0,
+       }
    );
   }
  }, [show, initialData, reset]);

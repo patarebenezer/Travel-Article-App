@@ -1,40 +1,44 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
- Dialog,
- DialogContent,
- DialogFooter,
- DialogHeader,
- DialogTitle,
-} from "@/components/ui/dialog";
 import {
  useArticles,
  useCategories,
  useArticleMutations,
 } from "@/hooks/useArticles";
-import ArticleModal, { ArticleFormData } from "./components/ArticleModal";
+import ArticleModal from "./components/ArticleModal";
 import ArticlesFilter from "./components/ArticlesFilter";
 import toast from "react-hot-toast";
 import { useDebounce } from "@/hooks/useDebounce";
 import ArticleSkeletonCard from "./components/ArticleSkeletonCard";
 import ArticlesGrid from "./components/ArticlesGrid";
 import { Plus } from "lucide-react";
+import { ArticleFormData } from "@/schemas/articleSchema";
+import { AxiosError } from "axios";
+import ConfirmDialog from "../components/ConfirmDialog";
+
+const handleAxiosError = (error: unknown, defaultMessage: string) => {
+ const axiosError = error as AxiosError<{ error: { message: string } }>;
+ toast.error(axiosError.response?.data?.error?.message || defaultMessage);
+};
+
+const SKELETON_COUNT = 3;
 
 export default function ArticlesPage() {
  const [showModal, setShowModal] = useState(false);
  const [isEditMode, setIsEditMode] = useState(false);
  const [editId, setEditId] = useState<number | null>(null);
- const [initialData, setInitialData] = useState<ArticleFormData | undefined>(
-  undefined
- );
+ const [initialData, setInitialData] = useState<ArticleFormData>();
  const [searchInput, setSearchInput] = useState("");
  const [selectedCategory, setSelectedCategory] = useState("");
  const [sortOrder, setSortOrder] = useState("createdAt:desc");
+ const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+ const [deleteId, setDeleteId] = useState<number | null>(null);
 
  const debouncedSearch = useDebounce(searchInput, 500);
+ const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
  const {
   data,
@@ -43,7 +47,6 @@ export default function ArticlesPage() {
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-  refetch,
  } = useArticles({
   title: debouncedSearch,
   category: selectedCategory,
@@ -52,11 +55,6 @@ export default function ArticlesPage() {
 
  const { data: categories, isLoading: isCategoriesLoading } = useCategories();
  const { create, update, remove } = useArticleMutations();
-
- const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
- const [deleteId, setDeleteId] = useState<number | null>(null);
-
- const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
  // Infinite Scroll
  useEffect(() => {
@@ -68,27 +66,34 @@ export default function ArticlesPage() {
   return () => observer.disconnect();
  }, [hasNextPage, fetchNextPage]);
 
- // Refetch when filter changes
- useEffect(() => {
-  refetch();
- }, [debouncedSearch, selectedCategory, sortOrder, refetch]);
-
- const handleSubmit = (data: ArticleFormData) => {
-  if (isEditMode && editId) {
-   update.mutate({ id: editId, data });
-   toast.success("Article updated successfully");
-  } else {
-   create.mutate(data);
-   toast.success("Article created successfully");
-  }
-  resetModalState();
- };
-
  const resetModalState = () => {
   setShowModal(false);
   setIsEditMode(false);
   setEditId(null);
   setInitialData(undefined);
+ };
+
+ const handleSubmit = (data: ArticleFormData) => {
+  if (isEditMode && editId) {
+   update.mutate(
+    { id: editId, data },
+    {
+     onSuccess: () => {
+      toast.success("Article updated successfully");
+      resetModalState();
+     },
+     onError: (error) => handleAxiosError(error, "Failed to update article"),
+    }
+   );
+  } else {
+   create.mutate(data, {
+    onSuccess: () => {
+     toast.success("Article created successfully");
+     resetModalState();
+    },
+    onError: (error) => handleAxiosError(error, "Failed to create article"),
+   });
+  }
  };
 
  if (isError)
@@ -129,7 +134,7 @@ export default function ArticlesPage() {
 
    {isLoading ? (
     <div className='p-4 grid grid-cols-1 md:grid-cols-3 gap-8'>
-     {Array.from({ length: 3 }).map((_, i) => (
+     {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
       <ArticleSkeletonCard key={i} />
      ))}
     </div>
@@ -152,7 +157,7 @@ export default function ArticlesPage() {
    <div ref={loadMoreRef} className='text-center py-6'>
     {isFetchingNextPage ? (
      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-      {[...Array(3)].map((_, i) => (
+      {Array.from({ length: SKELETON_COUNT }).map((_, i) => (
        <ArticleSkeletonCard key={i} />
       ))}
      </div>
@@ -169,27 +174,22 @@ export default function ArticlesPage() {
     isEditMode={isEditMode}
    />
 
-   <Dialog open={openConfirmDialog} onOpenChange={setOpenConfirmDialog}>
-    <DialogContent>
-     <DialogHeader>
-      <DialogTitle>Delete Article?</DialogTitle>
-     </DialogHeader>
-     <DialogFooter>
-      <Button variant='outline' onClick={() => setOpenConfirmDialog(false)}>
-       Cancel
-      </Button>
-      <Button
-       variant='destructive'
-       onClick={() => {
-        if (deleteId) remove.mutate(deleteId);
-        setOpenConfirmDialog(false);
-       }}
-      >
-       Delete
-      </Button>
-     </DialogFooter>
-    </DialogContent>
-   </Dialog>
+   <ConfirmDialog
+    open={openConfirmDialog}
+    title='Delete Article?'
+    onOpenChange={setOpenConfirmDialog}
+    onConfirm={() => {
+     if (deleteId) {
+      remove.mutate(deleteId, {
+       onSuccess: () => {
+        toast.success("Article deleted successfully");
+       },
+       onError: (error) => handleAxiosError(error, "Failed to delete article"),
+      });
+     }
+     setOpenConfirmDialog(false);
+    }}
+   />
   </>
  );
 }

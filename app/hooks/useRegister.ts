@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import { registerUser, AuthResponse } from "@/services/authService";
-import { RegisterFormData } from "@/schemas/registerSchema";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "@/app/services/authService";
+import { RegisterFormData } from "@/app/schemas/registerSchema";
+import { AuthResponse } from "@/app/types/auth";
 
 export function useRegister() {
  const router = useRouter();

@@ -1,7 +1,7 @@
 "use client";
 
-import { Article } from "@/lib/types";
 import Image from "next/image";
+import { Eye, Pencil, Trash } from "lucide-react";
 import {
  Card,
  CardHeader,
@@ -11,23 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Eye, Pencil, Trash } from "lucide-react";
-
-interface ArticleCardProps {
- article: {
-  id: number;
-  title: string;
-  description: string;
-  cover_image_url: string;
-  createdAt: string;
-  user: { username: string };
-  category: { name: string };
-  comments: { id: number; content: string }[];
- };
- onDetail: (id: number) => void;
- onEdit: (article: Article) => void;
- onDelete: (id: number) => void;
-}
+import { ArticleCardProps } from "@/app/types/article";
 
 const isValidUrl = (url: string): boolean => {
  try {
@@ -51,7 +35,7 @@ export default function ArticleCard({
 
  return (
   <Card className='overflow-hidden shadow-lg flex flex-col h-full'>
-   {/* Gambar */}
+   {/* Thumbnail */}
    <div
     className='w-full h-56 relative cursor-pointer'
     onClick={() => onDetail(article.id)}
@@ -73,7 +57,7 @@ export default function ArticleCard({
    </CardContent>
 
    <CardFooter className='flex justify-between items-center mt-auto'>
-    {/* Kiri: Avatar + Username */}
+    {/* Left: Avatar + Username */}
     <div className='flex items-center gap-2'>
      <Avatar>
       <AvatarImage src='https://github.com/shadcn.png' />
@@ -82,7 +66,7 @@ export default function ArticleCard({
      <span className='font-semibold'>{article.user?.username}</span>
     </div>
 
-    {/* Kanan: Icon Buttons */}
+    {/* Right: Icon Buttons */}
     <div className='flex gap-1'>
      <Button
       variant='ghost'

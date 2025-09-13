@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchArticleDetail } from "@/services/articleService";
+import { fetchArticleDetail } from "@/app/services/articleService";
 
 export function useArticleDetail(documentId: string) {
  return useQuery({

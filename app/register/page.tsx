@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
+import { useRegister } from "@/app/hooks/useRegister";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
  Card,
  CardHeader,
@@ -13,10 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, RegisterFormData } from "@/schemas/registerSchema";
-import { useRegister } from "@/hooks/useRegister";
+import { RegisterFormData, registerSchema } from "@/app/schemas/registerSchema";
 
 export default function RegisterPage() {
  const {

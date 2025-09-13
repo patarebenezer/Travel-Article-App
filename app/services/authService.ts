@@ -1,15 +1,7 @@
-import { api } from "@/lib/api";
-import { LoginFormData } from "@/schemas/loginSchema";
-import { RegisterFormData } from "@/schemas/registerSchema";
-
-export type AuthResponse = {
- jwt: string;
- user: {
-  id: number;
-  username: string;
-  email: string;
- };
-};
+import { api } from "@/app/lib/api";
+import { AuthResponse } from "@/app/types/auth";
+import { LoginFormData } from "@/app/schemas/loginSchema";
+import { RegisterFormData } from "@/app/schemas/registerSchema";
 
 export const loginUser = async (data: LoginFormData): Promise<AuthResponse> => {
  const response = await api.post<AuthResponse>("/auth/local", data);

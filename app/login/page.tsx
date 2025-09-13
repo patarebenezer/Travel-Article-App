@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useLogin } from "@/app/hooks/useLogin";
 import Navbar from "@/app/components/Navbar";
 import {
  Card,
@@ -13,10 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormData } from "@/schemas/loginSchema";
-import { useLogin } from "@/hooks/useLogin";
+import { LoginFormData, loginSchema } from "@/app/schemas/loginSchema";
 
 export default function LoginPage() {
  const {

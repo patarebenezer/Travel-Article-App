@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { api } from "@/lib/api";
+
+import { api } from "@/app/lib/api";
+import { ArticleFormData } from "@/app/schemas/articleSchema";
+import { Article, UpdateArticlePayload } from "@/app/types/article";
+import { AxiosResponse } from "axios";
 
 const isValidUrl = (url: string): boolean => {
  try {
@@ -36,7 +40,7 @@ export const fetchCategories = async () => {
  return response.data.data;
 };
 
-export const createArticle = async (data: any) => {
+export const createArticle = async (data: ArticleFormData) => {
  return api.post("/articles", {
   data: { ...data, category: Number(data.category) },
  });
@@ -45,13 +49,15 @@ export const createArticle = async (data: any) => {
 export const updateArticle = async ({
  id,
  data,
-}: {
- id: number;
- data: any;
-}) => {
- return api.put(`/articles/${id}`, {
-  data: { ...data, category: Number(data.category) },
- });
+}: UpdateArticlePayload): Promise<Article> => {
+ const response: AxiosResponse<{ data: Article }> = await api.put(
+  `/articles/${id}`,
+  {
+   data: { ...data, category: Number(data.category) },
+  }
+ );
+
+ return response.data.data;
 };
 
 export const deleteArticle = async (id: number) => {

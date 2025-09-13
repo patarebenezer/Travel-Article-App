@@ -23,16 +23,14 @@ import {
  SelectTrigger,
  SelectValue,
 } from "@/components/ui/select";
-import { articleSchema, ArticleFormData } from "../../../schemas/articleSchema";
-import { useCategories } from "@/hooks/useArticles";
-
-interface ArticleModalProps {
- show: boolean;
- onClose: () => void;
- onSubmit: (data: ArticleFormData) => void;
- initialData?: ArticleFormData;
- isEditMode: boolean;
-}
+import { useCategories } from "@/app/hooks/useArticles";
+import { ArticleFormData, articleSchema } from "@/app/schemas/articleSchema";
+import {
+ ArticleModalProps,
+ FormFieldProps,
+ Category,
+ defaultArticleFormData,
+} from "@/app/types/article";
 
 export default function ArticleModal({
  show,
@@ -51,14 +49,8 @@ export default function ArticleModal({
   control,
  } = useForm<ArticleFormData>({
   resolver: zodResolver(articleSchema),
-  defaultValues: initialData || {
-   title: "",
-   description: "",
-   cover_image_url: "",
-   category: 0,
-  },
+  defaultValues: initialData || defaultArticleFormData,
  });
- console.log({ initialData });
 
  useEffect(() => {
   if (show) {
@@ -67,16 +59,11 @@ export default function ArticleModal({
      ? {
         ...initialData,
         category:
-         typeof initialData.category === "object"
-          ? (initialData.category as any).id
-          : initialData.category,
+         typeof initialData?.category === "object"
+          ? (initialData?.category as any)?.id
+          : initialData?.category,
        }
-     : {
-        title: "",
-        description: "",
-        cover_image_url: "",
-        category: 0,
-       }
+     : defaultArticleFormData
    );
   }
  }, [show, initialData, reset]);
@@ -141,7 +128,7 @@ export default function ArticleModal({
           {isCategoriesLoading ? (
            <SelectItem value='0'>Loading...</SelectItem>
           ) : (
-           categories?.map((cat: { id: number; name: string }) => (
+           categories?.map((cat: Category) => (
             <SelectItem key={cat.id} value={String(cat.id)}>
              {cat.name}
             </SelectItem>
@@ -170,15 +157,7 @@ export default function ArticleModal({
 }
 
 /** Reusable Form Field Component */
-function FormField({
- label,
- error,
- children,
-}: {
- label: string;
- error?: string;
- children: React.ReactNode;
-}) {
+function FormField({ label, error, children }: FormFieldProps) {
  return (
   <div className='space-y-1'>
    <Label>{label}</Label>

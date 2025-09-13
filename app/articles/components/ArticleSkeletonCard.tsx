@@ -6,20 +6,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function ArticleSkeletonCard() {
  return (
   <Card className='overflow-hidden shadow-lg flex flex-col h-full'>
-   {/* Gambar */}
+   {/* Image */}
    <Skeleton className='w-full h-56' />
 
    <div className='p-4 flex flex-col gap-2'>
     {/* Badge */}
     <Skeleton className='h-5 w-24 rounded-full' />
 
-    {/* Tanggal & Komentar */}
+    {/* Date & Comment */}
     <Skeleton className='h-4 w-32' />
 
-    {/* Judul */}
+    {/* Title */}
     <Skeleton className='h-6 w-3/4' />
 
-    {/* Deskripsi */}
+    {/* Description */}
     <Skeleton className='h-4 w-full' />
     <Skeleton className='h-4 w-5/6' />
     <Skeleton className='h-4 w-4/6' />

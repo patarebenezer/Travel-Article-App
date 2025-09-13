@@ -1,10 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
-
-interface ShareButtonsProps {
- url: string;
- title: string;
-}
+import { Button } from "@/components/ui/button";
+import { ShareButtonsProps } from "@/app/types/article";
 
 export default function ShareButtons({ url, title }: ShareButtonsProps) {
  return (

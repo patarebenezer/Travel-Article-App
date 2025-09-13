@@ -1,5 +1,6 @@
 "use client";
 
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
  Select,
@@ -8,23 +9,7 @@ import {
  SelectTrigger,
  SelectValue,
 } from "@/components/ui/select";
-import { Search } from "lucide-react";
-
-interface Category {
- id: number;
- name: string;
-}
-
-interface ArticlesFilterProps {
- searchInput: string;
- setSearchInput: (value: string) => void;
- categories: Category[] | undefined;
- isCategoriesLoading: boolean;
- selectedCategory: string;
- setSelectedCategory: (value: string) => void;
- sortOrder: string;
- setSortOrder: (value: string) => void;
-}
+import { ArticlesFilterProps } from "@/app/types/article";
 
 export default function ArticlesFilter({
  searchInput,
@@ -72,6 +57,7 @@ export default function ArticlesFilter({
      )}
     </SelectContent>
    </Select>
+
    {/* Sort */}
    <Select value={sortOrder} onValueChange={setSortOrder}>
     <SelectTrigger className='w-full md:w-[180px]'>

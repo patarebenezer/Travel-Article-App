@@ -2,7 +2,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import ArticleCard from "./ArticleCard";
+import ArticleCard from "@/app/articles/components/ArticleCard";
 
 export default function ArticlesGrid({
  data,
@@ -11,7 +11,7 @@ export default function ArticlesGrid({
 }: {
  data: any;
  onEditArticle: (article: any) => void;
- onDeleteArticle: (id: number) => void;
+ onDeleteArticle: (article: any) => void;
 }) {
  const router = useRouter();
 
@@ -37,7 +37,7 @@ export default function ArticlesGrid({
      article={article}
      onDetail={() => handleDetail(article.documentId)}
      onEdit={() => onEditArticle(article)}
-     onDelete={() => onDeleteArticle(article.id)}
+     onDelete={() => onDeleteArticle(article.documentId)}
     />
    ))}
   </div>

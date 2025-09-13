@@ -1,23 +1,23 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import toast from "react-hot-toast";
+import { Plus } from "lucide-react";
+import { AxiosError } from "axios";
 import {
  useArticles,
  useCategories,
  useArticleMutations,
-} from "@/hooks/useArticles";
-import ArticleModal from "./components/ArticleModal";
-import ArticlesFilter from "./components/ArticlesFilter";
-import toast from "react-hot-toast";
-import { useDebounce } from "@/hooks/useDebounce";
-import ArticleSkeletonCard from "./components/ArticleSkeletonCard";
-import ArticlesGrid from "./components/ArticlesGrid";
-import { Plus } from "lucide-react";
-import { ArticleFormData } from "@/schemas/articleSchema";
-import { AxiosError } from "axios";
-import ConfirmDialog from "../components/ConfirmDialog";
+} from "@/app/hooks/useArticles";
+import { useDebounce } from "@/app/hooks/useDebounce";
+import { ArticleFormData } from "@/app/schemas/articleSchema";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import ArticleModal from "@/app/articles/components/ArticleModal";
+import ArticlesFilter from "@/app/articles/components/ArticlesFilter";
+import ArticlesGrid from "@/app/articles/components/ArticlesGrid";
+import ArticleSkeletonCard from "@/app/articles/components/ArticleSkeletonCard";
+import ConfirmDialog from "@/app/components/ConfirmDialog";
 
 const handleAxiosError = (error: unknown, defaultMessage: string) => {
  const axiosError = error as AxiosError<{ error: { message: string } }>;
@@ -143,7 +143,7 @@ export default function ArticlesPage() {
      data={data}
      onEditArticle={(article) => {
       setIsEditMode(true);
-      setEditId(article.id);
+      setEditId(article.documentId);
       setInitialData(article);
       setShowModal(true);
      }}

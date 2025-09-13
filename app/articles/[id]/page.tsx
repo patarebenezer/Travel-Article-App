@@ -1,14 +1,15 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
+import { useArticleDetail } from "@/app/hooks/useArticleDetail";
+import { Button } from "@/components/ui/button";
 import Navbar from "@/app/components/Navbar";
-import { useArticleDetail } from "@/hooks/useArticleDetail";
-import ArticleDetailSkeleton from "../components/ArticleDetailSkeleton";
-import ShareButtons from "../components/ShareButtons";
+import ShareButtons from "@/app/articles/components/ShareButtons";
+import ArticleDetailSkeleton from "@/app/articles/components/ArticleDetailSkeleton";
 
 export default function ArticleDetailPage() {
  const { id } = useParams();

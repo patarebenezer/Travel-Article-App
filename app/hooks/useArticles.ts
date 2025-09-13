@@ -1,26 +1,30 @@
+import { AxiosError } from "axios";
 import {
  useInfiniteQuery,
  useMutation,
  useQuery,
  useQueryClient,
 } from "@tanstack/react-query";
+
 import {
+ createArticle,
+ deleteArticle,
  fetchArticles,
  fetchCategories,
- createArticle,
  updateArticle,
- deleteArticle,
-} from "@/services/articleService";
+} from "@/app/services/articleService";
+
+import {
+ Article,
+ ArticleFilters,
+ UpdateArticlePayload,
+} from "@/app/types/article";
 
 export const useCategories = () => {
  return useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
 };
 
-export const useArticles = (filters: {
- title?: string;
- category?: string;
- sortOrder?: string;
-}) => {
+export const useArticles = (filters: ArticleFilters) => {
  return useInfiniteQuery({
   queryKey: ["articles", filters],
   queryFn: ({ pageParam }) => fetchArticles({ pageParam, ...filters }),
@@ -40,7 +44,7 @@ export const useArticleMutations = () => {
   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["articles"] }),
  });
 
- const update = useMutation({
+ const update = useMutation<Article, AxiosError, UpdateArticlePayload>({
   mutationFn: updateArticle,
   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["articles"] }),
  });

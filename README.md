@@ -3,8 +3,6 @@
 A **Travel Article App** built with **Next.js 14 (App Router)**, **TypeScript**, **Tailwind CSS**, and **React Query**.  
 This app allows users to **view travel articles**, **filter by category**, and **perform CRUD operations** (Create, Read, Update, Delete) on articles.
 
-## 🌐 Live Demo: Travel Article App : https://travel-article-hi6pd2oss-patarebenezers-projects.vercel.app/
-
 ## 🚀 Features
 
 ✅ User Authentication (Login & Register)  

@@ -1,4 +1,4 @@
-import { api } from "@/app/lib/api";
+import { api } from "@/lib/api";
 import { AuthResponse } from "@/app/types/auth";
 import { LoginFormData } from "@/app/schemas/loginSchema";
 import { RegisterFormData } from "@/app/schemas/registerSchema";

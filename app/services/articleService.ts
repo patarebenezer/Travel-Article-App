@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { api } from "@/app/lib/api";
+import { api } from "@/lib/api";
 import { ArticleFormData } from "@/app/schemas/articleSchema";
 import { Article, UpdateArticlePayload } from "@/app/types/article";
 import { AxiosResponse } from "axios";
